@@ -11,7 +11,7 @@ function node_unpublished_home_node_update($node) {
   // node is now UNPUBLISHED...
   if ($node->status === 0) {
     // check if there is a redirect for this path already
-    // YES there is an existing redirect -> update it.
+    // NO -> There is no existing redirect, create one.
     if (!redirect_load_by_source($path_alias)) {
       $redirect = new stdClass();
       $redirect->source = $path_alias;
