@@ -1,0 +1,35 @@
+<?php
+/**
+ * @file node_unpublished_home.module
+ */
+
+/**
+ * Implements hook_node_update().
+ */
+function node_unpublished_home_node_update($node) {
+  $path_alias = $node->path['alias'];
+  // node is now UNPUBLISHED...
+  if ($node->status === 0) {
+    // check if there is a redirect for this path already
+    // YES there is an existing redirect -> update it.
+    if (!redirect_load_by_source($path_alias)) {
+      $redirect = new stdClass();
+      $redirect->source = $path_alias;
+      $redirect->source_options = array();
+      $redirect->redirect = '<front>';
+      $redirect->redirect_options = array();
+      $redirect->status_code = 0;
+      $redirect->type = 'redirect';
+      $redirect->language = LANGUAGE_NONE;
+      redirect_save($redirect);
+    }
+  }
+  // node is now PUBLISHED...
+  else {
+    // check if there is a redirect from this path to another already
+    // YES -> remove it.
+    if (redirect_load_by_source($path_alias)) {
+      redirect_delete_by_path($path_alias);
+    }
+  }
+}

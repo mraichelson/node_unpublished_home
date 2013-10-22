@@ -1,0 +1,5 @@
+name = Node Unpublished Home Redirect
+description = Creates redirect rules for unpublished nodes to the homepage of the site.
+core = 7.x
+
+dependencies[] = redirect
